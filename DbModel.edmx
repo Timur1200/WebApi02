@@ -1,0 +1,487 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище SysAdminModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MaterialList">
+          <Key>
+            <PropertyRef Name="IdList" />
+          </Key>
+          <Property Name="IdList" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReqId" Type="int" />
+          <Property Name="MaterId" Type="int" />
+          <Property Name="AmountInList" Type="int" />
+        </EntityType>
+        <EntityType Name="Quire">
+          <Key>
+            <PropertyRef Name="IdQuire" />
+          </Key>
+          <Property Name="IdQuire" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="SpecId" Type="int" />
+          <Property Name="Date1" Type="date" />
+          <Property Name="Theme" Type="nvarchar" MaxLength="50" />
+          <Property Name="Desc" Type="nvarchar(max)" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Answer" Type="nvarchar(max)" />
+          <Property Name="Date2" Type="date" />
+        </EntityType>
+        <EntityType Name="Roli">
+          <Key>
+            <PropertyRef Name="IdRoli" />
+          </Key>
+          <Property Name="IdRoli" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameRol" Type="nvarchar" MaxLength="50" />
+          <Property Name="Access" Type="int" />
+        </EntityType>
+        <EntityType Name="Spec">
+          <Key>
+            <PropertyRef Name="IdSpec" />
+          </Key>
+          <Property Name="IdSpec" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Rol_Id" Type="int" />
+          <Property Name="FIo" Type="nvarchar" MaxLength="150" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" />
+          <Property Name="Pass" Type="nvarchar" MaxLength="50" />
+          <Property Name="Status" Type="bit" />
+        </EntityType>
+        <EntityType Name="Storage">
+          <Key>
+            <PropertyRef Name="IdMaterial" />
+          </Key>
+          <Property Name="IdMaterial" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MaterialName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Price" Type="int" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="Img" Type="image" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Rol_Id" Type="int" />
+          <Property Name="Fio" Type="nvarchar" MaxLength="150" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" />
+          <Property Name="Pass" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_MaterialList_ToTable">
+          <End Role="Quire" Type="Self.Quire" Multiplicity="0..1" />
+          <End Role="MaterialList" Type="Self.MaterialList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quire">
+              <PropertyRef Name="IdQuire" />
+            </Principal>
+            <Dependent Role="MaterialList">
+              <PropertyRef Name="ReqId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MaterialList_ToTable_1">
+          <End Role="Storage" Type="Self.Storage" Multiplicity="0..1" />
+          <End Role="MaterialList" Type="Self.MaterialList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Storage">
+              <PropertyRef Name="IdMaterial" />
+            </Principal>
+            <Dependent Role="MaterialList">
+              <PropertyRef Name="MaterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quire_ToTable">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Quire" Type="Self.Quire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="Quire">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quire_ToTable_1">
+          <End Role="Spec" Type="Self.Spec" Multiplicity="0..1" />
+          <End Role="Quire" Type="Self.Quire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spec">
+              <PropertyRef Name="IdSpec" />
+            </Principal>
+            <Dependent Role="Quire">
+              <PropertyRef Name="SpecId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spec_ToTable">
+          <End Role="Roli" Type="Self.Roli" Multiplicity="0..1" />
+          <End Role="Spec" Type="Self.Spec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roli">
+              <PropertyRef Name="IdRoli" />
+            </Principal>
+            <Dependent Role="Spec">
+              <PropertyRef Name="Rol_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_ToTable">
+          <End Role="Roli" Type="Self.Roli" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roli">
+              <PropertyRef Name="IdRoli" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="Rol_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище SysAdminModelContainer">
+          <EntitySet Name="MaterialList" EntityType="Self.MaterialList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Quire" EntityType="Self.Quire" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roli" EntityType="Self.Roli" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Spec" EntityType="Self.Spec" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Storage" EntityType="Self.Storage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_MaterialList_ToTable" Association="Self.FK_MaterialList_ToTable">
+            <End Role="Quire" EntitySet="Quire" />
+            <End Role="MaterialList" EntitySet="MaterialList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MaterialList_ToTable_1" Association="Self.FK_MaterialList_ToTable_1">
+            <End Role="Storage" EntitySet="Storage" />
+            <End Role="MaterialList" EntitySet="MaterialList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Quire_ToTable" Association="Self.FK_Quire_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Quire" EntitySet="Quire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Quire_ToTable_1" Association="Self.FK_Quire_ToTable_1">
+            <End Role="Spec" EntitySet="Spec" />
+            <End Role="Quire" EntitySet="Quire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spec_ToTable" Association="Self.FK_Spec_ToTable">
+            <End Role="Roli" EntitySet="Roli" />
+            <End Role="Spec" EntitySet="Spec" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_ToTable" Association="Self.FK_Users_ToTable">
+            <End Role="Roli" EntitySet="Roli" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SysAdminModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MaterialList">
+          <Key>
+            <PropertyRef Name="IdList" />
+          </Key>
+          <Property Name="IdList" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReqId" Type="Int32" />
+          <Property Name="MaterId" Type="Int32" />
+          <Property Name="AmountInList" Type="Int32" />
+          <NavigationProperty Name="Quire" Relationship="Self.FK_MaterialList_ToTable" FromRole="MaterialList" ToRole="Quire" />
+          <NavigationProperty Name="Storage" Relationship="Self.FK_MaterialList_ToTable_1" FromRole="MaterialList" ToRole="Storage" />
+        </EntityType>
+        <EntityType Name="Quire">
+          <Key>
+            <PropertyRef Name="IdQuire" />
+          </Key>
+          <Property Name="IdQuire" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="SpecId" Type="Int32" />
+          <Property Name="Date1" Type="DateTime" Precision="0" />
+          <Property Name="Theme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Desc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Answer" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Date2" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="MaterialList" Relationship="Self.FK_MaterialList_ToTable" FromRole="Quire" ToRole="MaterialList" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Quire_ToTable" FromRole="Quire" ToRole="Users" />
+          <NavigationProperty Name="Spec" Relationship="Self.FK_Quire_ToTable_1" FromRole="Quire" ToRole="Spec" />
+        </EntityType>
+        <EntityType Name="Roli">
+          <Key>
+            <PropertyRef Name="IdRoli" />
+          </Key>
+          <Property Name="IdRoli" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameRol" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Access" Type="Int32" />
+          <NavigationProperty Name="Spec" Relationship="Self.FK_Spec_ToTable" FromRole="Roli" ToRole="Spec" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_ToTable" FromRole="Roli" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Spec">
+          <Key>
+            <PropertyRef Name="IdSpec" />
+          </Key>
+          <Property Name="IdSpec" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rol_Id" Type="Int32" />
+          <Property Name="FIo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Boolean" />
+          <NavigationProperty Name="Quire" Relationship="Self.FK_Quire_ToTable_1" FromRole="Spec" ToRole="Quire" />
+          <NavigationProperty Name="Roli" Relationship="Self.FK_Spec_ToTable" FromRole="Spec" ToRole="Roli" />
+        </EntityType>
+        <EntityType Name="Storage">
+          <Key>
+            <PropertyRef Name="IdMaterial" />
+          </Key>
+          <Property Name="IdMaterial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MaterialName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="Img" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="MaterialList" Relationship="Self.FK_MaterialList_ToTable_1" FromRole="Storage" ToRole="MaterialList" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="IdUser" />
+          </Key>
+          <Property Name="IdUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Rol_Id" Type="Int32" />
+          <Property Name="Fio" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Pass" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Quire" Relationship="Self.FK_Quire_ToTable" FromRole="Users" ToRole="Quire" />
+          <NavigationProperty Name="Roli" Relationship="Self.FK_Users_ToTable" FromRole="Users" ToRole="Roli" />
+        </EntityType>
+        <Association Name="FK_MaterialList_ToTable">
+          <End Role="Quire" Type="Self.Quire" Multiplicity="0..1" />
+          <End Role="MaterialList" Type="Self.MaterialList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Quire">
+              <PropertyRef Name="IdQuire" />
+            </Principal>
+            <Dependent Role="MaterialList">
+              <PropertyRef Name="ReqId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MaterialList_ToTable_1">
+          <End Role="Storage" Type="Self.Storage" Multiplicity="0..1" />
+          <End Role="MaterialList" Type="Self.MaterialList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Storage">
+              <PropertyRef Name="IdMaterial" />
+            </Principal>
+            <Dependent Role="MaterialList">
+              <PropertyRef Name="MaterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quire_ToTable">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Quire" Type="Self.Quire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="IdUser" />
+            </Principal>
+            <Dependent Role="Quire">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Quire_ToTable_1">
+          <End Role="Spec" Type="Self.Spec" Multiplicity="0..1" />
+          <End Role="Quire" Type="Self.Quire" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Spec">
+              <PropertyRef Name="IdSpec" />
+            </Principal>
+            <Dependent Role="Quire">
+              <PropertyRef Name="SpecId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Spec_ToTable">
+          <End Role="Roli" Type="Self.Roli" Multiplicity="0..1" />
+          <End Role="Spec" Type="Self.Spec" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roli">
+              <PropertyRef Name="IdRoli" />
+            </Principal>
+            <Dependent Role="Spec">
+              <PropertyRef Name="Rol_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_ToTable">
+          <End Role="Roli" Type="Self.Roli" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roli">
+              <PropertyRef Name="IdRoli" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="Rol_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="dbModel" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MaterialList" EntityType="Self.MaterialList" />
+          <EntitySet Name="Quire" EntityType="Self.Quire" />
+          <EntitySet Name="Roli" EntityType="Self.Roli" />
+          <EntitySet Name="Spec" EntityType="Self.Spec" />
+          <EntitySet Name="Storage" EntityType="Self.Storage" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+          <AssociationSet Name="FK_MaterialList_ToTable" Association="Self.FK_MaterialList_ToTable">
+            <End Role="Quire" EntitySet="Quire" />
+            <End Role="MaterialList" EntitySet="MaterialList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MaterialList_ToTable_1" Association="Self.FK_MaterialList_ToTable_1">
+            <End Role="Storage" EntitySet="Storage" />
+            <End Role="MaterialList" EntitySet="MaterialList" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Quire_ToTable" Association="Self.FK_Quire_ToTable">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Quire" EntitySet="Quire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Quire_ToTable_1" Association="Self.FK_Quire_ToTable_1">
+            <End Role="Spec" EntitySet="Spec" />
+            <End Role="Quire" EntitySet="Quire" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Spec_ToTable" Association="Self.FK_Spec_ToTable">
+            <End Role="Roli" EntitySet="Roli" />
+            <End Role="Spec" EntitySet="Spec" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_ToTable" Association="Self.FK_Users_ToTable">
+            <End Role="Roli" EntitySet="Roli" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище SysAdminModelContainer" CdmEntityContainer="dbModel">
+          <EntitySetMapping Name="MaterialList">
+            <EntityTypeMapping TypeName="SysAdminModel.MaterialList">
+              <MappingFragment StoreEntitySet="MaterialList">
+                <ScalarProperty Name="IdList" ColumnName="IdList" />
+                <ScalarProperty Name="ReqId" ColumnName="ReqId" />
+                <ScalarProperty Name="MaterId" ColumnName="MaterId" />
+                <ScalarProperty Name="AmountInList" ColumnName="AmountInList" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Quire">
+            <EntityTypeMapping TypeName="SysAdminModel.Quire">
+              <MappingFragment StoreEntitySet="Quire">
+                <ScalarProperty Name="IdQuire" ColumnName="IdQuire" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="SpecId" ColumnName="SpecId" />
+                <ScalarProperty Name="Date1" ColumnName="Date1" />
+                <ScalarProperty Name="Theme" ColumnName="Theme" />
+                <ScalarProperty Name="Desc" ColumnName="Desc" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="Date2" ColumnName="Date2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roli">
+            <EntityTypeMapping TypeName="SysAdminModel.Roli">
+              <MappingFragment StoreEntitySet="Roli">
+                <ScalarProperty Name="IdRoli" ColumnName="IdRoli" />
+                <ScalarProperty Name="NameRol" ColumnName="NameRol" />
+                <ScalarProperty Name="Access" ColumnName="Access" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Spec">
+            <EntityTypeMapping TypeName="SysAdminModel.Spec">
+              <MappingFragment StoreEntitySet="Spec">
+                <ScalarProperty Name="IdSpec" ColumnName="IdSpec" />
+                <ScalarProperty Name="Rol_Id" ColumnName="Rol_Id" />
+                <ScalarProperty Name="FIo" ColumnName="FIo" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Storage">
+            <EntityTypeMapping TypeName="SysAdminModel.Storage">
+              <MappingFragment StoreEntitySet="Storage">
+                <ScalarProperty Name="IdMaterial" ColumnName="IdMaterial" />
+                <ScalarProperty Name="MaterialName" ColumnName="MaterialName" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Img" ColumnName="Img" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SysAdminModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="SysAdminModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="IdUser" ColumnName="IdUser" />
+                <ScalarProperty Name="Rol_Id" ColumnName="Rol_Id" />
+                <ScalarProperty Name="Fio" ColumnName="Fio" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

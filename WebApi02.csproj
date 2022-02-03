@@ -168,6 +168,7 @@
     <Compile Include="Controllers\RolisController.cs" />
     <Compile Include="Controllers\SpecsController.cs" />
     <Compile Include="Controllers\StoragesController.cs" />
+    <Compile Include="Controllers\Users1ControllerTest.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DbModel.Context.cs">

@@ -21,6 +21,19 @@ namespace WebApi02.Controllers
         {
             return db.Quire;
         }
+        [Route("api/getQuireAdmin")]
+        public IHttpActionResult GetQuireAdmin()
+        {
+            var quire = db.Quire.Where(q => q.Status == 0).OrderByDescending(q => q.Date1);
+      
+
+            if (quire == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(quire);
+        }
 
         // GET: api/Quires/5
         [ResponseType(typeof(Quire))]

@@ -12,59 +12,44 @@ using WebApi02;
 
 namespace WebApi02.Controllers
 {
-    public class SpecsController : ApiController
+    public class Users1ControllerTest : ApiController
     {
         private dbModel db = new dbModel();
 
-        // GET: api/Specs
-        public IQueryable<Spec> GetSpec()
+        // GET: api/Users1ControllerTest
+        public IQueryable<Users> GetUsers()
         {
-            return db.Spec;
+            return db.Users;
         }
 
-        [Route("api/getOnlySpec")]
-        public IHttpActionResult GetOnlySpec()
+        // GET: api/Users1ControllerTest/5
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult GetUsers(int id)
         {
-            var quire = db.Spec.Where(q => q.Roli.Access == 1);
-
-
-            if (quire == null)
+            Users users = db.Users.Find(id);
+            if (users == null)
             {
                 return NotFound();
             }
 
-            return Ok(quire);
+            return Ok(users);
         }
 
-
-        // GET: api/Specs/5
-        [ResponseType(typeof(Spec))]
-        public IHttpActionResult GetSpec(int id)
-        {
-            Spec spec = db.Spec.Find(id);
-            if (spec == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(spec);
-        }
-
-        // PUT: api/Specs/5
+        // PUT: api/Users1ControllerTest/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutSpec(int id, Spec spec)
+        public IHttpActionResult PutUsers(int id, Users users)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != spec.IdSpec)
+            if (id != users.IdUser)
             {
                 return BadRequest();
             }
 
-            db.Entry(spec).State = EntityState.Modified;
+            db.Entry(users).State = EntityState.Modified;
 
             try
             {
@@ -72,7 +57,7 @@ namespace WebApi02.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SpecExists(id))
+                if (!UsersExists(id))
                 {
                     return NotFound();
                 }
@@ -85,35 +70,35 @@ namespace WebApi02.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Specs
-        [ResponseType(typeof(Spec))]
-        public IHttpActionResult PostSpec(Spec spec)
+        // POST: api/Users1ControllerTest
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult PostUsers(Users users)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Spec.Add(spec);
+            db.Users.Add(users);
             db.SaveChanges();
 
-            return CreatedAtRoute("DefaultApi", new { id = spec.IdSpec }, spec);
+            return CreatedAtRoute("DefaultApi", new { id = users.IdUser }, users);
         }
 
-        // DELETE: api/Specs/5
-        [ResponseType(typeof(Spec))]
-        public IHttpActionResult DeleteSpec(int id)
+        // DELETE: api/Users1ControllerTest/5
+        [ResponseType(typeof(Users))]
+        public IHttpActionResult DeleteUsers(int id)
         {
-            Spec spec = db.Spec.Find(id);
-            if (spec == null)
+            Users users = db.Users.Find(id);
+            if (users == null)
             {
                 return NotFound();
             }
 
-            db.Spec.Remove(spec);
+            db.Users.Remove(users);
             db.SaveChanges();
 
-            return Ok(spec);
+            return Ok(users);
         }
 
         protected override void Dispose(bool disposing)
@@ -125,9 +110,9 @@ namespace WebApi02.Controllers
             base.Dispose(disposing);
         }
 
-        private bool SpecExists(int id)
+        private bool UsersExists(int id)
         {
-            return db.Spec.Count(e => e.IdSpec == id) > 0;
+            return db.Users.Count(e => e.IdUser == id) > 0;
         }
     }
 }
